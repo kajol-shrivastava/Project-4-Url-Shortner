@@ -41,7 +41,8 @@ const shortUrl = async function (req, res) {
         if (Object.keys(requestBody).length == 0) {
             return res.status(400).send({ status: false, message: "invalid requestbody" })
         }
-        const { longUrl } = requestBody
+        let  { longUrl } = requestBody
+        longUrl=longUrl.trim()
         if (!isValid(longUrl)) {
             return res.status(400).send({ status: false, message: "long url is mandatory" })
         } 
@@ -93,10 +94,10 @@ const getUrl= async function(req,res){
         
         const urlCheck= await urlModel.findOne({urlCode:urlCode})
         if(!urlCheck){
-            return res.status(404).send({status:false,message:"not a valid url"})
+            return res.status(404).send({status:false,message:"URL not found"})
         }
         await SET_ASYNC(`${urlCode}`, JSON.stringify(urlCheck))
-        //  return res.status(302).send({redirected:urlCheck.longUrl})
+        
 
         res.status(302).redirect(urlCheck.longUrl)
         
