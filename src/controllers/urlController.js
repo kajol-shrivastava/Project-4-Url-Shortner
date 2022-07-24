@@ -86,6 +86,9 @@ const shortUrl = async function (req, res) {
 const getUrl= async function(req,res){
     try {
         const urlCode=req.params.urlCode
+        if(shortId.isValid(urlCode)){
+           return res.status(400).send({ status: false, message:"Not a valid short-id" })
+        }
         let cahcedUrlData = await GET_ASYNC(`${urlCode}`)
         if(cahcedUrlData) {
              let cachesurldata=JSON.parse(cahcedUrlData)
